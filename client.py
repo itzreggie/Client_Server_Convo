@@ -2,7 +2,11 @@ import xmlrpc.client
 
 def main():
     server_url = input("Enter the server URL (e.g., http://localhost:8000): ")
-    proxy = xmlrpc.client.ServerProxy(server_url)
+    try:
+        proxy = xmlrpc.client.ServerProxy(server_url)
+    except Exception as e:
+        print(f"Error connecting to server: {e}")
+        return
 
     while True:
         print("\nOptions:")
@@ -16,23 +20,32 @@ def main():
             topic = input("Enter the topic: ")
             text = input("Enter the note text: ")
             timestamp = input("Enter the timestamp (YYYY-MM-DD HH:MM:SS): ")
-            response = proxy.add_note(topic, text, timestamp)
-            print("Response from server:", response)
+            try:
+                response = proxy.add_note(topic, text, timestamp)
+                print("Response from server:", response)
+            except Exception as e:
+                print(f"Error adding note: {e}")
 
         elif choice == '2':
             topic = input("Enter the topic to retrieve notes: ")
-            notes = proxy.get_notes(topic)
-            if notes:
-                print("Notes for topic '{}':".format(topic))
-                for note in notes:
-                    print(note)
-            else:
-                print("There are no topics like '{}'".format(topic))
+            try:
+                notes = proxy.get_notes(topic)
+                if notes:
+                    print("Notes for topic '{}':".format(topic))
+                    for note in notes:
+                        print(note)
+                else:
+                    print("There are no topics like '{}'".format(topic))
+            except Exception as e:
+                print(f"Error retrieving notes: {e}")
 
         elif choice == '3':
             topic = input("Enter the topic to search on Wikipedia: ")
-            response = proxy.append_wikipedia_data(topic)
-            print("Response from server:", response)
+            try:
+                response = proxy.append_wikipedia_data(topic)
+                print("Response from server:", response)
+            except Exception as e:
+                print(f"Error appending Wikipedia data: {e}")
 
         elif choice == '4':
             print("Exiting the client.")
