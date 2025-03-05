@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<data>
+	
+    
+	<topic name="Animal Things">
+		
+        
+		<note name="Dogs are better than cats 03">
+			
+            
+			<text>
+            Dogs respond when you call their name (unlike cats, who just ignore you)
+            </text>
+			
+            
+			<timestamp>
+            03/16/21 - 14:03:04
+            </timestamp>
+			
+        
+		</note>
+		
+    
+	</topic>
+	
+
+	<topic name="water">
+		<note>
+			<text>
+Wikipedia Summary: Water is an inorganic compound with the chemical formula H2O. It is a transparent, tasteless, odorless, and nearly colorless chemical substance. It is the main constituent of Earth's hydrosphere and the fluids of all known living organisms. It is vital for all known forms of life, despite not providing food energy or organic micronutrients. Its chemical formula, H2O, indicates that each of its molecules contains one oxygen and two hydrogen atoms, connected by covalent bonds. The hydrogen atoms are attached to the oxygen atom at an angle of 104.45°. In liquid form, H2O is also called "water" at standard temperature and pressure.
+Full Article: https://en.wikipedia.org/wiki/water
+</text>
+			<timestamp>
+2025-03-05 16:58:32
+</timestamp>
+		</note>
+	</topic>
+</data>
