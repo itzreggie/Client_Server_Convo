@@ -3,7 +3,6 @@ from xmlrpc.server import SimpleXMLRPCRequestHandler
 import os
 import xml.etree.ElementTree as ET
 import datetime
-import xml.dom.minidom
 
 class Notebook:
     def __init__(self, filename='db.xml'):
@@ -25,13 +24,25 @@ class Notebook:
 
     def save_notes(self):
         try:
-            rough_string = ET.tostring(self.root, 'utf-8')
-            reparsed = xml.dom.minidom.parseString(rough_string)
-            pretty_xml_as_string = reparsed.toprettyxml()
-            with open(self.filename, 'w') as f:
-                f.write(pretty_xml_as_string)
+            self.indent(self.root)
+            self.tree.write(self.filename, encoding='utf-8', xml_declaration=True)
         except Exception as e:
             print(f"Error saving notes: {e}")
+
+    def indent(self, elem, level=0):
+        i = "\n" + level * "  "
+        if len(elem):
+            if not elem.text or not elem.text.strip():
+                elem.text = i + "  "
+            if not elem.tail or not elem.tail.strip():
+                elem.tail = i
+            for elem in elem:
+                self.indent(elem, level + 1)
+            if not elem.tail or not elem.tail.strip():
+                elem.tail = i
+        else:
+            if level and (not elem.tail or not elem.tail.strip()):
+                elem.tail = i
 
     def add_entry(self, topic, text, timestamp):
         try:
@@ -40,9 +51,9 @@ class Notebook:
                 topic_element = ET.SubElement(self.root, 'topic', name=topic)
             note_element = ET.SubElement(topic_element, 'note')
             text_element = ET.SubElement(note_element, 'text')
-            text_element.text = f"\n{text}\n"
+            text_element.text = text
             timestamp_element = ET.SubElement(note_element, 'timestamp')
-            timestamp_element.text = f"\n{timestamp}\n"
+            timestamp_element.text = timestamp
             self.save_notes()
             return f"Entry added to topic '{topic}'."
         except Exception as e:
