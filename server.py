@@ -1,5 +1,6 @@
 from xmlrpc.server import SimpleXMLRPCServer
 import logging
+import datetime
 from wikipedia_api import get_wikipedia_data
 from notebook import Notebook
 
@@ -32,9 +33,18 @@ class NotebookServer:
     def append_wikipedia_data(self, topic):
         try:
             summary, full_article_url = get_wikipedia_data(topic)
-            response = self.notebook.append_wikipedia_data(topic, summary, full_article_url)
-            logging.info(response)
-            return response
+            if summary.startswith("Error retrieving data"):
+                error_msg = f"'{topic}' page does not exist on wikipedia."
+                logging.error(error_msg)
+                return error_msg
+            # Generate a timestamp and add the entry
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            self.notebook.add_entry(topic, f"Wikipedia Summary: {summary}\nFull Article: {full_article_url}", timestamp)
+            formatted_message = (f"Topic: {topic}\n"
+                                 f"Text: Wikipedia Summary: {summary}\nFull Article: {full_article_url}\n"
+                                 f"Timestamp: {timestamp}")
+            logging.info(formatted_message)
+            return formatted_message
         except Exception as e:
             logging.error(f"Error appending Wikipedia data: {e}")
             return f"Error appending Wikipedia data: {e}"
