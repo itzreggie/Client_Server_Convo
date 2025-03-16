@@ -37,7 +37,7 @@ class NotebookServer:
                 error_msg = f"'{topic}' page does not exist on wikipedia."
                 logging.error(error_msg)
                 return error_msg
-            # Generate a timestamp and add the entry
+            # Generate the timestamp and add the entry
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.notebook.add_entry(topic, f"Wikipedia Summary: {summary}\nFull Article: {full_article_url}", timestamp)
             formatted_message = (f"Topic: {topic}\n"
